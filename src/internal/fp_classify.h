@@ -75,7 +75,7 @@ LIBMA_ALWAYS_INLINE_STATIC bool ker_flt_issubnormal_u32(const uint32_t u) {
 LIBMA_ALWAYS_INLINE_STATIC float ker_flt_copysign(const float x, const float y) {
     uint32_t ux = ker_flt_to_u32(x);
     uint32_t uy = ker_flt_to_u32(y);
-    ux = ux & ~FLT_SIGN_MASK | (uy & FLT_SIGN_MASK);
+    ux = (ux & ~FLT_SIGN_MASK) | (uy & FLT_SIGN_MASK);
     return ker_u32_to_flt(ux);
 }
 
@@ -186,7 +186,7 @@ LIBMA_ALWAYS_INLINE_STATIC int ker_dbl_issubnormal_u64(const uint64_t u) {
 LIBMA_ALWAYS_INLINE_STATIC double ker_dbl_copysign(const double x, const double y) {
     uint64_t ux = ker_dbl_to_u64(x);
     const uint64_t uy = ker_dbl_to_u64(y);
-    ux = ux & ~DBL_SIGN_MASK | uy & DBL_SIGN_MASK;
+    ux = (ux & ~DBL_SIGN_MASK) | (uy & DBL_SIGN_MASK);
     return ker_u64_to_dbl(ux);
 }
 
