@@ -17,7 +17,7 @@
  * @param x The floating-point number to convert.
  * @return The 32-bit unsigned integer representation of the floating-point number.
  */
-LIBMA_ALWAYS_INLINE_STATIC uint32_t flt_to_u32(const float x) {
+LIBMA_ALWAYS_INLINE_STATIC uint32_t ker_flt_to_u32(const float x) {
     uint32_t u;
 #if LIBMA_BUILTIN_MEMCPY
     __builtin_memcpy(&u, &x, sizeof u);
@@ -34,7 +34,7 @@ LIBMA_ALWAYS_INLINE_STATIC uint32_t flt_to_u32(const float x) {
  * @param u The 32-bit unsigned integer to convert.
  * @return The floating-point representation of the given unsigned integer.
  */
-LIBMA_ALWAYS_INLINE_STATIC float u32_to_flt(const uint32_t u) {
+LIBMA_ALWAYS_INLINE_STATIC float ker_u32_to_flt(const uint32_t u) {
     float x;
 #if LIBMA_BUILTIN_MEMCPY
     __builtin_memcpy(&x, &u, sizeof x);
@@ -52,7 +52,7 @@ LIBMA_ALWAYS_INLINE_STATIC float u32_to_flt(const uint32_t u) {
  * @return The 64-bit unsigned integer representation of the double-precision
  *         floating-point number.
  */
-LIBMA_ALWAYS_INLINE_STATIC uint64_t dbl_to_u64(const double x) {
+LIBMA_ALWAYS_INLINE_STATIC uint64_t ker_dbl_to_u64(const double x) {
     uint64_t u;
 #if LIBMA_BUILTIN_MEMCPY
     __builtin_memcpy(&u, &x, sizeof u);
@@ -69,7 +69,7 @@ LIBMA_ALWAYS_INLINE_STATIC uint64_t dbl_to_u64(const double x) {
  * @param u The 64-bit unsigned integer to convert.
  * @return The double-precision floating-point representation of the input.
  */
-LIBMA_ALWAYS_INLINE_STATIC double u64_to_dbl(const uint64_t u) {
+LIBMA_ALWAYS_INLINE_STATIC double ker_u64_to_dbl(const uint64_t u) {
     double x;
 #if LIBMA_BUILTIN_MEMCPY
     __builtin_memcpy(&x, &u, sizeof x);
@@ -91,7 +91,7 @@ LIBMA_ALWAYS_INLINE_STATIC double u64_to_dbl(const uint64_t u) {
  * @param u The 32-bit unsigned integer representation of a floating-point number.
  * @return The sign of the floating-point number, where 0 indicates positive and 1 indicates negative.
  */
-LIBMA_ALWAYS_INLINE_STATIC int flt_sign_u32(const uint32_t u) {
+LIBMA_ALWAYS_INLINE_STATIC int ker_flt_sign_u32(const uint32_t u) {
     return (int)(u >> 31);
 }
 
@@ -102,8 +102,8 @@ LIBMA_ALWAYS_INLINE_STATIC int flt_sign_u32(const uint32_t u) {
  * @param u The 32-bit unsigned integer representation of the floating-point number.
  * @return The exponent value as a signed integer.
  */
-LIBMA_ALWAYS_INLINE_STATIC int flt_exp_u32(const uint32_t u) {
-    return (int)((u >> 23) & 0xFF);
+LIBMA_ALWAYS_INLINE_STATIC int ker_flt_exp_u32(const uint32_t u) {
+    return (int)(u >> 23 & 0xFF);
 }
 
 /**
@@ -113,7 +113,7 @@ LIBMA_ALWAYS_INLINE_STATIC int flt_exp_u32(const uint32_t u) {
  * @param u The 32-bit unsigned integer representation of a floating-point number.
  * @return The fractional part of the floating-point number as a 32-bit unsigned integer.
  */
-LIBMA_ALWAYS_INLINE_STATIC uint32_t flt_frac_u32(const uint32_t u) {
+LIBMA_ALWAYS_INLINE_STATIC uint32_t ker_flt_frac_u32(const uint32_t u) {
     return u & FLT_FRAC_MASK;
 }
 
@@ -130,7 +130,7 @@ LIBMA_ALWAYS_INLINE_STATIC uint32_t flt_frac_u32(const uint32_t u) {
  * @param u The 64-bit unsigned integer to extract the sign bit from.
  * @return An integer representing the sign bit: 1 if the MSB is set, 0 otherwise.
  */
-LIBMA_ALWAYS_INLINE_STATIC int dbl_sign_u64(const uint64_t u) {
+LIBMA_ALWAYS_INLINE_STATIC int ker_dbl_sign_u64(const uint64_t u) {
     return (int)(u >> 63);
 }
 
@@ -145,8 +145,8 @@ LIBMA_ALWAYS_INLINE_STATIC int dbl_sign_u64(const uint64_t u) {
  *          double-precision floating-point bit pattern.
  * @return The extracted exponent value as a signed integer.
  */
-LIBMA_ALWAYS_INLINE_STATIC int dbl_exp_u64(const uint64_t u) {
-    return (int)((u >> 52) & 0x7FF);
+LIBMA_ALWAYS_INLINE_STATIC int ker_dbl_exp_u64(const uint64_t u) {
+    return (int)(u >> 52 & 0x7FF);
 }
 
 /**
@@ -158,7 +158,7 @@ LIBMA_ALWAYS_INLINE_STATIC int dbl_exp_u64(const uint64_t u) {
  * floating-point number.
  * @return The 64-bit unsigned integer fractional part of the input.
  */
-LIBMA_ALWAYS_INLINE_STATIC uint64_t dbl_frac_u64(const uint64_t u) {
+LIBMA_ALWAYS_INLINE_STATIC uint64_t ker_dbl_frac_u64(const uint64_t u) {
     return u & DBL_FRAC_MASK;
 }
 

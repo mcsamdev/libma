@@ -33,8 +33,8 @@
  *         - `+0` or `-0` on underflow.
  *         - The scaled result otherwise.
  */
-LIBMA_ALWAYS_INLINE_STATIC float flt_scalbn(const float x, const int k) {
-    const uint32_t u = flt_to_u32(x);
+LIBMA_ALWAYS_INLINE_STATIC float ker_flt_scalbn(const float x, const int k) {
+    const uint32_t u = ker_flt_to_u32(x);
     const uint32_t ax = u & ~FLT_SIGN_MASK;
     const uint32_t sign = u & FLT_SIGN_MASK;
 
@@ -52,23 +52,23 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_scalbn(const float x, const int k) {
     if(exp == 0) {
         /* subnormal: normalize then apply k */
         int e;
-        const uint32_t m = flt_mantissa_u32(u32_to_flt(sign | frac), &e); /* positive subnormal */
+        const uint32_t m = ker_flt_mantissa_u32(ker_u32_to_flt(sign | frac), &e); /* positive subnormal */
         /* x = m * 2^(e-23); scaling by k => exponent becomes (e+k) */
         e += k;
 
         /* convert to normal/subnormal */
         if(e > 127) {
-            return u32_to_flt(sign | FLT_POS_INF_U32); /* overflow */
+            return ker_u32_to_flt(sign | FLT_POS_INF_U32); /* overflow */
         }
         if(e < -149) {
-            return u32_to_flt(sign); /* underflow to signed zero */
+            return ker_u32_to_flt(sign); /* underflow to signed zero */
         }
 
         if(e >= -126) {
             /* normal: exponent field = e + bias, frac = (m - 2^23) */
             const auto out_exp = (uint32_t)(e + FLT_EXP_BIAS);
             const uint32_t out_frac = (m & FLT_FRAC_MASK);
-            return u32_to_flt(sign | (out_exp << 23) | out_frac);
+            return ker_u32_to_flt(sign | (out_exp << 23) | out_frac);
         }
         else {
             /* subnormal: value = m * 2^(e-23), with e < -126
@@ -76,7 +76,7 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_scalbn(const float x, const int k) {
             const int rshift = (-126 - e);
             /* m has leading 1 at bit 23, need to shift into [22:0] with exponent 0 */
             const uint32_t sub = m >> rshift;
-            return u32_to_flt(sign | (sub & FLT_FRAC_MASK));
+            return ker_u32_to_flt(sign | (sub & FLT_FRAC_MASK));
         }
     }
 
@@ -85,22 +85,22 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_scalbn(const float x, const int k) {
     e += k;
 
     if(e > 127) {
-        return u32_to_flt(sign | FLT_POS_INF_U32); /* overflow */
+        return ker_u32_to_flt(sign | FLT_POS_INF_U32); /* overflow */
     }
     if(e < -149) {
-        return u32_to_flt(sign); /* underflow to signed zero */
+        return ker_u32_to_flt(sign); /* underflow to signed zero */
     }
 
     if(e >= -126) {
         const auto out_exp = (uint32_t)(e + FLT_EXP_BIAS);
-        return u32_to_flt(sign | (out_exp << 23) | frac);
+        return ker_u32_to_flt(sign | (out_exp << 23) | frac);
     }
     /* underflow to subnormal */
     /* construct mantissa with implicit 1 then shift */
     const uint32_t m = (1u << 23) | frac;
     const int rshift = (-126 - e);
     const uint32_t sub = m >> rshift;
-    return u32_to_flt(sign | (sub & FLT_FRAC_MASK));
+    return ker_u32_to_flt(sign | (sub & FLT_FRAC_MASK));
 }
 
 /**
@@ -120,8 +120,8 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_scalbn(const float x, const int k) {
  *         - `+0` or `-0` if the result underflows.
  *         - The appropriately scaled value otherwise.
  */
-LIBMA_ALWAYS_INLINE_STATIC double dbl_scalbn(const double x, const int k) {
-    const uint64_t u = dbl_to_u64(x);
+LIBMA_ALWAYS_INLINE_STATIC double ker_dbl_scalbn(const double x, const int k) {
+    const uint64_t u = ker_dbl_to_u64(x);
     const uint64_t ax = u & ~DBL_SIGN_MASK;
     const uint64_t sign = u & DBL_SIGN_MASK;
 
@@ -138,44 +138,44 @@ LIBMA_ALWAYS_INLINE_STATIC double dbl_scalbn(const double x, const int k) {
     if(exp == 0) {
         /* subnormal: normalize then apply k */
         int e;
-        const uint64_t m = dbl_mantissa_u64(u64_to_dbl(sign | frac), &e); /* positive subnormal */
+        const uint64_t m = ker_dbl_mantissa_u64(ker_u64_to_dbl(sign | frac), &e); /* positive subnormal */
         e += k;
 
         if(e > 1023) {
-            return u64_to_dbl(sign | DBL_POS_INF_U64); /* overflow */
+            return ker_u64_to_dbl(sign | DBL_POS_INF_U64); /* overflow */
         }
         if(e < -1074) {
-            return u64_to_dbl(sign); /* underflow to signed zero */
+            return ker_u64_to_dbl(sign); /* underflow to signed zero */
         }
 
         if(e >= -1022) {
             const auto out_exp = (uint64_t)(e + DBL_EXP_BIAS);
             const uint64_t out_frac = (m & DBL_FRAC_MASK);
-            return u64_to_dbl(sign | (out_exp << 52) | out_frac);
+            return ker_u64_to_dbl(sign | (out_exp << 52) | out_frac);
         }
         const int rshift = (-1022 - e);
         const uint64_t sub = m >> rshift;
-        return u64_to_dbl(sign | (sub & DBL_FRAC_MASK));
+        return ker_u64_to_dbl(sign | (sub & DBL_FRAC_MASK));
     }
 
     int e = exp - DBL_EXP_BIAS;
     e += k;
 
     if(e > 1023) {
-        return u64_to_dbl(sign | DBL_POS_INF_U64);
+        return ker_u64_to_dbl(sign | DBL_POS_INF_U64);
     }
     if(e < -1074) {
-        return u64_to_dbl(sign);
+        return ker_u64_to_dbl(sign);
     }
 
     if(e >= -1022) {
         const auto out_exp = (uint64_t)(e + DBL_EXP_BIAS);
-        return u64_to_dbl(sign | (out_exp << 52) | frac);
+        return ker_u64_to_dbl(sign | (out_exp << 52) | frac);
     }
     const uint64_t m = (1ULL << 52) | frac;
     const int rshift = (-1022 - e);
     const uint64_t sub = m >> rshift;
-    return u64_to_dbl(sign | (sub & DBL_FRAC_MASK));
+    return ker_u64_to_dbl(sign | (sub & DBL_FRAC_MASK));
 }
 
 #endif //LIBMA_SCALBN_H

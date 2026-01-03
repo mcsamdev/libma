@@ -23,7 +23,7 @@
  * @param x The input 32-bit unsigned integer. The caller must guarantee that x is not zero.
  * @return The number of leading zero bits in the input value.
  */
-LIBMA_ALWAYS_INLINE_STATIC int libma_clz32(uint32_t x) {
+LIBMA_ALWAYS_INLINE_STATIC int ker_libma_clz32(uint32_t x) {
 #if (LIBMA_GCC || LIBMA_CLANG)
     /* __builtin_clz(0) is UB; caller guarantees x != 0 */
     return __builtin_clz(x);
@@ -46,7 +46,7 @@ LIBMA_ALWAYS_INLINE_STATIC int libma_clz32(uint32_t x) {
  * @param x The input 64-bit unsigned integer. The caller must guarantee that x is not zero.
  * @return The number of leading zero bits in the input value.
  */
-LIBMA_ALWAYS_INLINE_STATIC int libma_clz64(uint64_t x) {
+LIBMA_ALWAYS_INLINE_STATIC int ker_libma_clz64(uint64_t x) {
 #if (LIBMA_GCC || LIBMA_CLANG)
     return __builtin_clzll(x);
 #else
@@ -70,17 +70,17 @@ LIBMA_ALWAYS_INLINE_STATIC int libma_clz64(uint64_t x) {
  *          For subnormal inputs, it is derived based on the leading bit's position after normalization.
  * @return The normalized floating-point number, with its fraction adjusted and exponent set to the bias (127).
  */
-LIBMA_ALWAYS_INLINE_STATIC float flt_normalize(const float x, int* e) {
-    uint32_t u = flt_to_u32(x);
-    const int exp = flt_exp_u32(u);
-    uint32_t frac = flt_frac_u32(u);
+LIBMA_ALWAYS_INLINE_STATIC float ker_flt_normalize(const float x, int* e) {
+    uint32_t u = ker_flt_to_u32(x);
+    const int exp = ker_flt_exp_u32(u);
+    uint32_t frac = ker_flt_frac_u32(u);
 
     if(exp == 0) {
         /* subnormal (caller should have excluded zero) */
         /* We want to shift frac so that bit 23 becomes 1. */
         /* frac is in bits [22:0], so its top possible bit is 22. */
         /* lead index = 31 - clz(frac). We need shift = 23 - lead. */
-        const int lead = 31 - libma_clz32(frac);
+        const int lead = 31 - ker_libma_clz32(frac);
         const int shift = 23 - lead;
 
         frac <<= shift; /* now has the 1 at bit 23 */
@@ -88,12 +88,12 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_normalize(const float x, int* e) {
         *e = 1 - FLT_EXP_BIAS - shift;
 
         const uint32_t norm = ((uint32_t)FLT_EXP_BIAS << 23) | frac | (u & FLT_SIGN_MASK);
-        return u32_to_flt(norm);
+        return ker_u32_to_flt(norm);
     }
 
     *e = exp - FLT_EXP_BIAS;
     u = (u & (FLT_SIGN_MASK | FLT_FRAC_MASK)) | ((uint32_t)FLT_EXP_BIAS << 23);
-    return u32_to_flt(u);
+    return ker_u32_to_flt(u);
 }
 
 /* double */
@@ -109,16 +109,16 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_normalize(const float x, int* e) {
  * @return The normalized double-precision floating-point number, with its fraction adjusted and exponent
  *         set to the bias (1023).
  */
-LIBMA_ALWAYS_INLINE_STATIC double dbl_normalize(const double x, int* e) {
-    uint64_t u = dbl_to_u64(x);
-    const int exp = dbl_exp_u64(u);
-    uint64_t frac = dbl_frac_u64(u);
+LIBMA_ALWAYS_INLINE_STATIC double ker_dbl_normalize(const double x, int* e) {
+    uint64_t u = ker_dbl_to_u64(x);
+    const int exp = ker_dbl_exp_u64(u);
+    uint64_t frac = ker_dbl_frac_u64(u);
 
     if(exp == 0) {
         /* subnormal (caller should have excluded zero) */
         /* Need to shift frac so bit 52 becomes 1.
            frac is in bits [51:0], top possible bit 51. */
-        const int lead = 63 - libma_clz64(frac);
+        const int lead = 63 - ker_libma_clz64(frac);
         const int shift = 52 - lead;
 
         frac <<= shift; /* now has the 1 at bit 52 */
@@ -126,12 +126,12 @@ LIBMA_ALWAYS_INLINE_STATIC double dbl_normalize(const double x, int* e) {
         *e = 1 - DBL_EXP_BIAS - shift;
 
         const uint64_t norm = ((uint64_t)DBL_EXP_BIAS << 52) | frac | (u & DBL_SIGN_MASK);
-        return u64_to_dbl(norm);
+        return ker_u64_to_dbl(norm);
     }
 
     *e = exp - DBL_EXP_BIAS;
     u = (u & (DBL_SIGN_MASK | DBL_FRAC_MASK)) | ((uint64_t)DBL_EXP_BIAS << 52);
-    return u64_to_dbl(u);
+    return ker_u64_to_dbl(u);
 }
 
 #endif //LIBMA_NORMALIZE_H

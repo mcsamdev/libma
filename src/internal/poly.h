@@ -18,7 +18,7 @@
  * @param c1 The coefficient for the linear term.
  * @return The evaluated value of the polynomial at the given x.
  */
-LIBMA_ALWAYS_INLINE_STATIC float poly1f(const float x, const float c0, const float c1) {
+LIBMA_ALWAYS_INLINE_STATIC float ker_poly1f(const float x, const float c0, const float c1) {
     return c0 + x * c1;
 }
 
@@ -31,7 +31,7 @@ LIBMA_ALWAYS_INLINE_STATIC float poly1f(const float x, const float c0, const flo
  * @param c2 The coefficient for the quadratic term.
  * @return The evaluated value of the polynomial at the given x.
  */
-LIBMA_ALWAYS_INLINE_STATIC float poly2f(const float x, const float c0, const float c1, const float c2) {
+LIBMA_ALWAYS_INLINE_STATIC float ker_poly2f(const float x, const float c0, const float c1, const float c2) {
     return (c2 * x + c1) * x + c0;
 }
 
@@ -45,7 +45,11 @@ LIBMA_ALWAYS_INLINE_STATIC float poly2f(const float x, const float c0, const flo
  * @param c3 The coefficient of the cubic term.
  * @return The evaluated value of the polynomial at the given x.
  */
-LIBMA_ALWAYS_INLINE_STATIC float poly3f(const float x, const float c0, const float c1, const float c2, const float c3) {
+LIBMA_ALWAYS_INLINE_STATIC float ker_poly3f(const float x,
+                                            const float c0,
+                                            const float c1,
+                                            const float c2,
+                                            const float c3) {
     return ((c3 * x + c2) * x + c1) * x + c0;
 }
 
@@ -60,12 +64,12 @@ LIBMA_ALWAYS_INLINE_STATIC float poly3f(const float x, const float c0, const flo
  * @param c4 The coefficient for the quartic term.
  * @return The evaluated value of the polynomial at the given x.
  */
-LIBMA_ALWAYS_INLINE_STATIC float poly4f(const float x,
-                                        const float c0,
-                                        const float c1,
-                                        const float c2,
-                                        const float c3,
-                                        const float c4) {
+LIBMA_ALWAYS_INLINE_STATIC float ker_poly4f(const float x,
+                                            const float c0,
+                                            const float c1,
+                                            const float c2,
+                                            const float c3,
+                                            const float c4) {
     return (((c4 * x + c3) * x + c2) * x + c1) * x + c0;
 }
 
@@ -81,13 +85,13 @@ LIBMA_ALWAYS_INLINE_STATIC float poly4f(const float x,
  * @param c5 The coefficient for the quintic term.
  * @return The evaluated value of the polynomial at the given x.
  */
-LIBMA_ALWAYS_INLINE_STATIC float poly5f(const float x,
-                                        const float c0,
-                                        const float c1,
-                                        const float c2,
-                                        const float c3,
-                                        const float c4,
-                                        const float c5) {
+LIBMA_ALWAYS_INLINE_STATIC float ker_poly5f(const float x,
+                                            const float c0,
+                                            const float c1,
+                                            const float c2,
+                                            const float c3,
+                                            const float c4,
+                                            const float c5) {
     return ((((c5 * x + c4) * x + c3) * x + c2) * x + c1) * x + c0;
 }
 
@@ -100,7 +104,7 @@ LIBMA_ALWAYS_INLINE_STATIC float poly5f(const float x,
  * @param c1 The linear term coefficient.
  * @return The result of the polynomial evaluation for the provided inputs.
  */
-LIBMA_ALWAYS_INLINE_STATIC double poly1(const double x, const double c0, const double c1) {
+LIBMA_ALWAYS_INLINE_STATIC double ker_poly1(const double x, const double c0, const double c1) {
     return c0 + x * c1;
 }
 
@@ -113,7 +117,7 @@ LIBMA_ALWAYS_INLINE_STATIC double poly1(const double x, const double c0, const d
  * @param c2 The coefficient for the quadratic term.
  * @return The evaluated value of the polynomial at the given x.
  */
-LIBMA_ALWAYS_INLINE_STATIC double poly2(const double x, const double c0, const double c1, const double c2) {
+LIBMA_ALWAYS_INLINE_STATIC double ker_poly2(const double x, const double c0, const double c1, const double c2) {
     return (c2 * x + c1) * x + c0;
 }
 
@@ -127,11 +131,11 @@ LIBMA_ALWAYS_INLINE_STATIC double poly2(const double x, const double c0, const d
  * @param c3 The coefficient for the cubic term.
  * @return The evaluated value of the polynomial at the given x.
  */
-LIBMA_ALWAYS_INLINE_STATIC double poly3(const double x,
-                                        const double c0,
-                                        const double c1,
-                                        const double c2,
-                                        const double c3) {
+LIBMA_ALWAYS_INLINE_STATIC double ker_poly3(const double x,
+                                            const double c0,
+                                            const double c1,
+                                            const double c2,
+                                            const double c3) {
     return ((c3 * x + c2) * x + c1) * x + c0;
 }
 
@@ -146,12 +150,12 @@ LIBMA_ALWAYS_INLINE_STATIC double poly3(const double x,
  * @param c4 The coefficient for the quartic term.
  * @return The evaluated value of the polynomial at the given x.
  */
-LIBMA_ALWAYS_INLINE_STATIC double poly4(const double x,
-                                        const double c0,
-                                        const double c1,
-                                        const double c2,
-                                        const double c3,
-                                        const double c4) {
+LIBMA_ALWAYS_INLINE_STATIC double ker_poly4(const double x,
+                                            const double c0,
+                                            const double c1,
+                                            const double c2,
+                                            const double c3,
+                                            const double c4) {
     return (((c4 * x + c3) * x + c2) * x + c1) * x + c0;
 }
 
@@ -167,13 +171,13 @@ LIBMA_ALWAYS_INLINE_STATIC double poly4(const double x,
  * @param c5 The coefficient for the quintic term.
  * @return The evaluated value of the polynomial at the given x.
  */
-LIBMA_ALWAYS_INLINE_STATIC double poly5(const double x,
-                                        const double c0,
-                                        const double c1,
-                                        const double c2,
-                                        const double c3,
-                                        const double c4,
-                                        const double c5) {
+LIBMA_ALWAYS_INLINE_STATIC double ker_poly5(const double x,
+                                            const double c0,
+                                            const double c1,
+                                            const double c2,
+                                            const double c3,
+                                            const double c4,
+                                            const double c5) {
     return ((((c5 * x + c4) * x + c3) * x + c2) * x + c1) * x + c0;
 }
 

@@ -24,8 +24,8 @@
  *
  * @return A positive infinity value in 32-bit floating-point format.
  */
-LIBMA_ALWAYS_INLINE_STATIC float flt_pos_inf(void) {
-    return u32_to_flt(FLT_POS_INF_U32);
+LIBMA_ALWAYS_INLINE_STATIC float ker_flt_pos_inf(void) {
+    return ker_u32_to_flt(FLT_POS_INF_U32);
 }
 
 /**
@@ -37,8 +37,8 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_pos_inf(void) {
  *
  * @return A negative infinity value in 32-bit floating-point format.
  */
-LIBMA_ALWAYS_INLINE_STATIC float flt_neg_inf(void) {
-    return u32_to_flt(FLT_NEG_INF_U32);
+LIBMA_ALWAYS_INLINE_STATIC float ker_flt_neg_inf(void) {
+    return ker_u32_to_flt(FLT_NEG_INF_U32);
 }
 
 /**
@@ -50,8 +50,8 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_neg_inf(void) {
  *
  * @return A quiet NaN value in 32-bit floating-point format.
  */
-LIBMA_ALWAYS_INLINE_STATIC float flt_qnan(void) {
-    return u32_to_flt(FLT_QNAN_U32);
+LIBMA_ALWAYS_INLINE_STATIC float ker_flt_qnan(void) {
+    return ker_u32_to_flt(FLT_QNAN_U32);
 }
 
 /**
@@ -67,8 +67,8 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_qnan(void) {
  *
  * @return A 32-bit floating-point signed zero with the specified sign.
  */
-LIBMA_ALWAYS_INLINE_STATIC float flt_signed_zero(const int sign) {
-    return u32_to_flt((uint32_t)(sign != 0) << 31);
+LIBMA_ALWAYS_INLINE_STATIC float ker_flt_signed_zero(const int sign) {
+    return ker_u32_to_flt((uint32_t)(sign != 0) << 31);
 }
 
 /* double */
@@ -86,8 +86,8 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_signed_zero(const int sign) {
  *
  * @return A positive infinity value in 64-bit floating-point format.
  */
-LIBMA_ALWAYS_INLINE_STATIC double dbl_pos_inf(void) {
-    return u64_to_dbl(DBL_POS_INF_U64);
+LIBMA_ALWAYS_INLINE_STATIC double ker_dbl_pos_inf(void) {
+    return ker_u64_to_dbl(DBL_POS_INF_U64);
 }
 
 /**
@@ -99,8 +99,8 @@ LIBMA_ALWAYS_INLINE_STATIC double dbl_pos_inf(void) {
  *
  * @return A negative infinity value in 64-bit floating-point format.
  */
-LIBMA_ALWAYS_INLINE_STATIC double dbl_neg_inf(void) {
-    return u64_to_dbl(DBL_NEG_INF_U64);
+LIBMA_ALWAYS_INLINE_STATIC double ker_dbl_neg_inf(void) {
+    return ker_u64_to_dbl(DBL_NEG_INF_U64);
 }
 
 /**
@@ -112,8 +112,8 @@ LIBMA_ALWAYS_INLINE_STATIC double dbl_neg_inf(void) {
  *
  * @return A quiet NaN value in 64-bit floating-point format.
  */
-LIBMA_ALWAYS_INLINE_STATIC double dbl_qnan(void) {
-    return u64_to_dbl(DBL_QNAN_U64);
+LIBMA_ALWAYS_INLINE_STATIC double ker_dbl_qnan(void) {
+    return ker_u64_to_dbl(DBL_QNAN_U64);
 }
 
 /**
@@ -125,8 +125,8 @@ LIBMA_ALWAYS_INLINE_STATIC double dbl_qnan(void) {
  * @param sign An integer representing the sign of the zero. A non-zero value results in negative zero, and zero results in positive zero.
  * @return A double-precision signed zero, either positive or negative, based on the sign.
  */
-LIBMA_ALWAYS_INLINE_STATIC double dbl_signed_zero(const int sign) {
-    return u64_to_dbl((uint64_t)(sign != 0) << 63);
+LIBMA_ALWAYS_INLINE_STATIC double ker_dbl_signed_zero(const int sign) {
+    return ker_u64_to_dbl((uint64_t)(sign != 0) << 63);
 }
 
 #endif //LIBMA_SPECIAL_H

@@ -38,10 +38,10 @@
  * @return The 23-bit mantissa of the floating-point number. Returns 0 for
  *         values representing zero or special cases like infinity and NaN.
  */
-LIBMA_ALWAYS_INLINE_STATIC uint32_t flt_mantissa_u32(const float x, int* e) {
-    const uint32_t u = flt_to_u32(x);
-    const uint32_t frac = flt_frac_u32(u);
-    const int exp = flt_exp_u32(u);
+LIBMA_ALWAYS_INLINE_STATIC uint32_t ker_flt_mantissa_u32(const float x, int* e) {
+    const uint32_t u = ker_flt_to_u32(x);
+    const uint32_t frac = ker_flt_frac_u32(u);
+    const int exp = ker_flt_exp_u32(u);
 
     if(exp == 0) {
         if(frac == 0) {
@@ -49,7 +49,7 @@ LIBMA_ALWAYS_INLINE_STATIC uint32_t flt_mantissa_u32(const float x, int* e) {
             return 0;
         } /* zero */
         /* subnormal: normalize so leading 1 lands at bit 23 */
-        const int lead = 31 - libma_clz32(frac); /* 0..22 */
+        const int lead = 31 - ker_libma_clz32(frac); /* 0..22 */
         const int shift = 23 - lead; /* 1..23 */
         uint32_t m = frac << shift; /* now has 1 at bit 23 */
         *e = 1 - FLT_EXP_BIAS - shift;
@@ -76,10 +76,10 @@ LIBMA_ALWAYS_INLINE_STATIC uint32_t flt_mantissa_u32(const float x, int* e) {
  * @return The signed 23-bit mantissa of the floating-point number. Returns 0 for
  *         values representing zero or special cases like infinity and NaN.
  */
-LIBMA_ALWAYS_INLINE_STATIC int32_t flt_mantissa_i32(const float x, int* e) {
-    const uint32_t u = flt_to_u32(x);
-    const int sign = flt_sign_u32(u);
-    const uint32_t m = flt_mantissa_u32(x, e);
+LIBMA_ALWAYS_INLINE_STATIC int32_t ker_flt_mantissa_i32(const float x, int* e) {
+    const uint32_t u = ker_flt_to_u32(x);
+    const int sign = ker_flt_sign_u32(u);
+    const uint32_t m = ker_flt_mantissa_u32(x, e);
     return sign ? -(int32_t)m : (int32_t)m;
 }
 
@@ -94,10 +94,10 @@ LIBMA_ALWAYS_INLINE_STATIC int32_t flt_mantissa_i32(const float x, int* e) {
  * @return The 52-bit mantissa of the floating-point number. Returns 0 for
  *         values representing zero, subnormal numbers, or special cases like infinity and NaN.
  */
-LIBMA_ALWAYS_INLINE_STATIC uint64_t dbl_mantissa_u64(const double x, int* e) {
-    const uint64_t u = dbl_to_u64(x);
-    const uint64_t frac = dbl_frac_u64(u);
-    const int exp = dbl_exp_u64(u);
+LIBMA_ALWAYS_INLINE_STATIC uint64_t ker_dbl_mantissa_u64(const double x, int* e) {
+    const uint64_t u = ker_dbl_to_u64(x);
+    const uint64_t frac = ker_dbl_frac_u64(u);
+    const int exp = ker_dbl_exp_u64(u);
 
     if(exp == 0) {
         if(frac == 0) {
@@ -105,7 +105,7 @@ LIBMA_ALWAYS_INLINE_STATIC uint64_t dbl_mantissa_u64(const double x, int* e) {
             return 0;
         } /* zero */
         /* subnormal: normalize so leading 1 lands at bit 52 */
-        const int lead = 63 - libma_clz64(frac); /* 0..51 */
+        const int lead = 63 - ker_libma_clz64(frac); /* 0..51 */
         const int shift = 52 - lead; /* 1..52 */
         const uint64_t m = frac << shift; /* now has 1 at bit 52 */
         *e = 1 - DBL_EXP_BIAS - shift;
@@ -131,10 +131,10 @@ LIBMA_ALWAYS_INLINE_STATIC uint64_t dbl_mantissa_u64(const double x, int* e) {
  * @return The signed 53-bit mantissa of the floating-point number. Returns 0 for
  *         values representing zero or special cases like infinity and NaN.
  */
-LIBMA_ALWAYS_INLINE_STATIC int64_t dbl_mantissa_i64(const double x, int* e) {
-    const uint64_t u = dbl_to_u64(x);
-    const int sign = dbl_sign_u64(u);
-    const uint64_t m = dbl_mantissa_u64(x, e);
+LIBMA_ALWAYS_INLINE_STATIC int64_t ker_dbl_mantissa_i64(const double x, int* e) {
+    const uint64_t u = ker_dbl_to_u64(x);
+    const int sign = ker_dbl_sign_u64(u);
+    const uint64_t m = ker_dbl_mantissa_u64(x, e);
     return sign ? -(int64_t)m : (int64_t)m;
 }
 

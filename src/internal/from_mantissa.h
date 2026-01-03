@@ -36,11 +36,11 @@
  * @return A `float` value reconstructed from the specified mantissa, exponent, and sign.
  *         Returns signed zero for the case where the mantissa is zero.
  */
-LIBMA_ALWAYS_INLINE_STATIC float flt_from_mantissa_exp(const uint32_t m, const int e, const int sign) {
+LIBMA_ALWAYS_INLINE_STATIC float ker_flt_from_mantissa_exp(const uint32_t m, const int e, const int sign) {
     /* Start as a normal with exponent=e, then apply exact scaling if needed.
        We directly encode if e is in normal range; otherwise go through scalbn. */
     if(m == 0) {
-        return flt_signed_zero(sign);
+        return ker_flt_signed_zero(sign);
     }
 
     /* m has leading 1 at bit 23; fraction field is low 23 bits */
@@ -51,7 +51,7 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_from_mantissa_exp(const uint32_t m, const i
         if(sign) {
             out |= FLT_SIGN_MASK;
         }
-        return u32_to_flt(out);
+        return ker_u32_to_flt(out);
     }
 
     /* Encode mantissa with exponent 0, then scale.
@@ -62,7 +62,7 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_from_mantissa_exp(const uint32_t m, const i
     }
 
     /* base = (m/2^23)*2^0. Need exponent e => scale by (e-0). */
-    return flt_scalbn(u32_to_flt(base), e);
+    return ker_flt_scalbn(ker_u32_to_flt(base), e);
 }
 
 /**
@@ -81,9 +81,9 @@ LIBMA_ALWAYS_INLINE_STATIC float flt_from_mantissa_exp(const uint32_t m, const i
  *         signed zero if the mantissa is zero, and handles special cases such as subnormal
  *         and overflow properly.
  */
-LIBMA_ALWAYS_INLINE_STATIC double dbl_from_mantissa_exp(const uint64_t m, const int e, const int sign) {
+LIBMA_ALWAYS_INLINE_STATIC double ker_dbl_from_mantissa_exp(const uint64_t m, const int e, const int sign) {
     if(m == 0) {
-        return dbl_signed_zero(sign);
+        return ker_dbl_signed_zero(sign);
     }
 
     const uint64_t frac = m & DBL_FRAC_MASK;
@@ -93,7 +93,7 @@ LIBMA_ALWAYS_INLINE_STATIC double dbl_from_mantissa_exp(const uint64_t m, const 
         if(sign) {
             out |= DBL_SIGN_MASK;
         }
-        return u64_to_dbl(out);
+        return ker_u64_to_dbl(out);
     }
 
     uint64_t base = ((uint64_t)DBL_EXP_BIAS << 52) | frac;
@@ -101,7 +101,7 @@ LIBMA_ALWAYS_INLINE_STATIC double dbl_from_mantissa_exp(const uint64_t m, const 
         base |= DBL_SIGN_MASK;
     }
 
-    return dbl_scalbn(u64_to_dbl(base), e);
+    return ker_dbl_scalbn(ker_u64_to_dbl(base), e);
 }
 
 #endif //LIBMA_FROM_MANTISSA_H
