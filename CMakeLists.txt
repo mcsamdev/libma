@@ -16,7 +16,8 @@ add_library(libma STATIC
         src/internal/scalbn.h
         src/internal/from_mantissa.h
         src/abs.c
-        src/min_max.c)
+        src/min_max.c
+        src/scaling_manip.c)
 
 target_include_directories(libma PUBLIC include/libma.h)
 target_include_directories(libma PRIVATE src/internal include)

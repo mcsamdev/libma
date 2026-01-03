@@ -4,16 +4,110 @@
 
 // 0. Classification / basic utilities
 
+/**
+ * @brief Computes the absolute value of a double-precision floating-point number.
+ *
+ * This function returns the absolute value of the input double.
+ * If the input is negative, the result is its positive counterpart;
+ * otherwise, the number is returned as is.
+ *
+ * @param x The input number whose absolute value is to be computed.
+ * @return The absolute value of the input number.
+ */
 double fabs(double x);
+/**
+ * @brief Computes the absolute value of a single-precision floating-point number.
+ *
+ * This function returns the absolute value of the input float.
+ * If the input is negative, the result is its positive counterpart;
+ * otherwise, the number is returned as is.
+ *
+ * @param x The input number whose absolute value is to be computed.
+ * @return The absolute value of the input number.
+ */
 float fabsf(float x);
-
+/**
+ * @brief Returns a double-precision floating-point number with the magnitude of the first argument
+ * and the sign of the second argument.
+ *
+ * This function combines the magnitude of the input number `x` with the sign of the input number `y`.
+ * The result will have the absolute value of `x` but the sign of `y`. If `y` is positive or zero, the result
+ * will also be positive, otherwise it will be negative.
+ *
+ * @param x The input number whose magnitude is to be used.
+ * @param y The input number whose sign is to be used.
+ * @return A double-precision floating-point number with the magnitude of `x` and the sign of `y`.
+ */
 double copysign(double x, double y);
+/**
+ * @brief Returns a floating-point number with the magnitude of one value and the sign of another.
+ *
+ * This function combines the magnitude of the first input argument (x) with the sign
+ * of the second input argument (y). If y is positive, the result will have a positive sign;
+ * if y is negative, the result will have a negative sign. The magnitude of the result corresponds
+ * to the absolute value of x.
+ *
+ * @param x The input number whose magnitude is to be used.
+ * @param y The input number whose sign is to be used.
+ * @return A floating-point number with the magnitude of x and the sign of y.
+ */
 float copysignf(float x, float y);
-
+/**
+ * @brief Returns the maximum of two double-precision floating-point numbers.
+ *
+ * This function compares two double-precision floating-point numbers and
+ * returns the greater of the two. If either input is a NaN, the function
+ * returns the other non-NaN value. If both inputs are NaN, the behavior
+ * is unspecified. Additionally, it handles the special case of signed zeros,
+ * where +0.0 is considered greater than -0.0.
+ *
+ * @param x The first double-precision floating-point number.
+ * @param y The second double-precision floating-point number.
+ * @return The greater of the two input values, or the non-NaN value
+ *         if one of the inputs is NaN.
+ */
 double fmax(double x, double y);
+/**
+ * @brief Returns the larger of two floating-point numbers.
+ *
+ * This function computes the maximum of two float values, taking into
+ * consideration special cases such as NaN propagation and signed zero.
+ * If either value is NaN, the other value is returned. If both values
+ * are signed zeros, the result is the one with a positive sign.
+ *
+ * @param x The first float value to compare.
+ * @param y The second float value to compare.
+ * @return The greater of the two input float values. If either input
+ *         is NaN, the other value is returned.
+ */
 float fmaxf(float x, float y);
 
+/**
+ * @brief Computes the smaller of two double-precision floating-point numbers.
+ *
+ * This function determines the smaller value between two double-precision
+ * floating-point numbers. If one of the inputs is NaN (Not a Number),
+ * the function returns the other value. If both inputs are zeros of
+ * opposite signs, the function returns the negative zero. Otherwise,
+ * it returns the lesser of the two input values.
+ *
+ * @param x The first double-precision floating-point number.
+ * @param y The second double-precision floating-point number.
+ * @return The smaller of the two input numbers, subject to special
+ *         handling of NaN and signed zero cases.
+ */
 double fmin(double x, double y);
+/**
+ * @brief Determines the smaller of two single-precision floating-point numbers.
+ *
+ * This function compares the two input values and returns the smaller one.
+ * If either input is NaN, the other value is returned. In the case where
+ * both values are zero, the result depends on the sign of the zero values.
+ *
+ * @param x The first single-precision floating-point number to compare.
+ * @param y The second single-precision floating-point number to compare.
+ * @return The smaller of the two input values, or the non-NaN value if one input is NaN.
+ */
 float fminf(float x, float y);
 
 // 1. Exponent manipulation / scaling

@@ -16,16 +16,16 @@ double fmax(const double x, const double y) {
     const uint64_t ux = ker_dbl_to_u64(x);
     const uint64_t uy = ker_dbl_to_u64(y);
 
+    // IEEE 754-2019 Requirement: If either input is NaN, return a NaN.
+    // This makes the operation associative and consistent.
     if(ker_dbl_isnan_u64(ux)) {
-        return y;
+        return x; // Returns the NaN in x
     }
     if(ker_dbl_isnan_u64(uy)) {
-        return x;
+        return y; // Returns the NaN in y
     }
 
-    /* Handle signed zeros: +0.0 > -0.0
-     * In IEEE-754 bit pattern, +0.0 is 0x0... and -0.0 is 0x8...
-     * However, for comparison, we can use the actual floats. */
+    // Handle signed zeros: +0.0 is greater than -0.0
     if(x == 0.0 && y == 0.0) {
         return ker_dbl_sign_u64(ux) == 0 ? x : y;
     }
@@ -37,11 +37,12 @@ float fmaxf(const float x, const float y) {
     const uint32_t ux = ker_flt_to_u32(x);
     const uint32_t uy = ker_flt_to_u32(y);
 
+    // NaN Propagation: If x or y is NaN, the result is NaN.
     if(ker_flt_isnan_u32(ux)) {
-        return y;
+        return x;
     }
     if(ker_flt_isnan_u32(uy)) {
-        return x;
+        return y;
     }
 
     if(x == 0.0f && y == 0.0f) {
@@ -55,14 +56,18 @@ double fmin(const double x, const double y) {
     const uint64_t ux = ker_dbl_to_u64(x);
     const uint64_t uy = ker_dbl_to_u64(y);
 
+    // IEEE 754-2019 'minimum' Requirement: Propagate NaNs.
+    // If either x or y is NaN, return the NaN.
     if(ker_dbl_isnan_u64(ux)) {
-        return y;
-    }
-    if(ker_dbl_isnan_u64(uy)) {
         return x;
     }
+    if(ker_dbl_isnan_u64(uy)) {
+        return y;
+    }
 
+    // Handle signed zeros: -0.0 is strictly less than +0.0
     if(x == 0.0 && y == 0.0) {
+        // Return x if it is negative zero, otherwise return y
         return ker_dbl_sign_u64(ux) != 0 ? x : y;
     }
 
@@ -73,11 +78,12 @@ float fminf(const float x, const float y) {
     const uint32_t ux = ker_flt_to_u32(x);
     const uint32_t uy = ker_flt_to_u32(y);
 
+    // Propagation: NaN in, NaN out.
     if(ker_flt_isnan_u32(ux)) {
-        return y;
+        return x;
     }
     if(ker_flt_isnan_u32(uy)) {
-        return x;
+        return y;
     }
 
     if(x == 0.0f && y == 0.0f) {
