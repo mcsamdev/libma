@@ -75,4 +75,8 @@ _Static_assert(DBL_MAX_EXP == 1024, "requires IEEE-754 binary64");
 #  define LIBMA_BUILTIN_MEMCPY 0
 #endif
 
+/* --- math constants --- */
+#define LIBMA_FP_ILOGB0    INT_MIN
+#define LIBMA_FP_ILOGBNAN  INT_MAX
+
 #endif //LIBMA_MATH_CONFIG_H

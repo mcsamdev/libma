@@ -5,10 +5,7 @@
 #ifndef LIBMA_MANTISSA_H
 #define LIBMA_MANTISSA_H
 
-/* src/internal/mantissa.h */
-#pragma once
-
-#include "fp_classify.h"
+#include "bits.h"
 #include "normalize.h"
 
 /* Extract an integer mantissa and an unbiased exponent.
@@ -38,7 +35,7 @@
  * @return The 23-bit mantissa of the floating-point number. Returns 0 for
  *         values representing zero or special cases like infinity and NaN.
  */
-LIBMA_ALWAYS_INLINE_STATIC uint32_t ker_flt_mantissa_u32(const float x, int* e) {
+LIBMA_ALWAYS_INLINE_STATIC uint32_t ker_flt_mantissa_u32(const float x, int* restrict e) {
     const uint32_t u = ker_flt_to_u32(x);
     const uint32_t frac = ker_flt_frac_u32(u);
     const int exp = ker_flt_exp_u32(u);
@@ -76,7 +73,7 @@ LIBMA_ALWAYS_INLINE_STATIC uint32_t ker_flt_mantissa_u32(const float x, int* e) 
  * @return The signed 23-bit mantissa of the floating-point number. Returns 0 for
  *         values representing zero or special cases like infinity and NaN.
  */
-LIBMA_ALWAYS_INLINE_STATIC int32_t ker_flt_mantissa_i32(const float x, int* e) {
+LIBMA_ALWAYS_INLINE_STATIC int32_t ker_flt_mantissa_i32(const float x, int* restrict e) {
     const uint32_t u = ker_flt_to_u32(x);
     const int sign = ker_flt_sign_u32(u);
     const uint32_t m = ker_flt_mantissa_u32(x, e);
@@ -94,7 +91,7 @@ LIBMA_ALWAYS_INLINE_STATIC int32_t ker_flt_mantissa_i32(const float x, int* e) {
  * @return The 52-bit mantissa of the floating-point number. Returns 0 for
  *         values representing zero, subnormal numbers, or special cases like infinity and NaN.
  */
-LIBMA_ALWAYS_INLINE_STATIC uint64_t ker_dbl_mantissa_u64(const double x, int* e) {
+LIBMA_ALWAYS_INLINE_STATIC uint64_t ker_dbl_mantissa_u64(const double x, int* restrict e) {
     const uint64_t u = ker_dbl_to_u64(x);
     const uint64_t frac = ker_dbl_frac_u64(u);
     const int exp = ker_dbl_exp_u64(u);
@@ -131,7 +128,7 @@ LIBMA_ALWAYS_INLINE_STATIC uint64_t ker_dbl_mantissa_u64(const double x, int* e)
  * @return The signed 53-bit mantissa of the floating-point number. Returns 0 for
  *         values representing zero or special cases like infinity and NaN.
  */
-LIBMA_ALWAYS_INLINE_STATIC int64_t ker_dbl_mantissa_i64(const double x, int* e) {
+LIBMA_ALWAYS_INLINE_STATIC int64_t ker_dbl_mantissa_i64(const double x, int* restrict e) {
     const uint64_t u = ker_dbl_to_u64(x);
     const int sign = ker_dbl_sign_u64(u);
     const uint64_t m = ker_dbl_mantissa_u64(x, e);

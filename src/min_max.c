@@ -16,13 +16,12 @@ double fmax(const double x, const double y) {
     const uint64_t ux = ker_dbl_to_u64(x);
     const uint64_t uy = ker_dbl_to_u64(y);
 
-    // IEEE 754-2019 Requirement: If either input is NaN, return a NaN.
-    // This makes the operation associative and consistent.
+    // return other value if  x or y is nan.
     if(ker_dbl_isnan_u64(ux)) {
-        return x; // Returns the NaN in x
+        return y; // Returns the NaN in x
     }
     if(ker_dbl_isnan_u64(uy)) {
-        return y; // Returns the NaN in y
+        return x; // Returns the NaN in y
     }
 
     // Handle signed zeros: +0.0 is greater than -0.0

@@ -112,19 +112,71 @@ float fminf(float x, float y);
 
 // 1. Exponent manipulation / scaling
 
+/**
+ * @brief Multiplies a floating-point number by an integral power of two.
+ *
+ * This function computes x * 2^n. It is usually more efficient than
+ * explicitly computing the power of two.
+ *
+ * @param x The base value.
+ * @param n The exponent value.
+ * @return x * 2^n.
+ */
 double scalbn(double x, int n);
+/**
+ * @brief Multiplies a single-precision floating-point number by an integral power of two.
+ */
 float scalbnf(float x, int n);
 
+/**
+ * @brief Computes x * 2^exp.
+ *
+ * Equivalent to scalbn(x, exp).
+ */
 double ldexp(double x, int exp);
+/**
+ * @brief Computes x * 2^exp for single-precision.
+ */
 float ldexpf(float x, int exp);
 
+/**
+ * @brief Decomposes a double-precision floating-point number into a normalized
+ * fraction and an integral power of two.
+ *
+ * The returned fraction is in the range [0.5, 1.0) or is zero.
+ * x = fraction * 2^*exp.
+ *
+ * @param x The value to decompose.
+ * @param exp Pointer to an integer to store the exponent.
+ * @return The normalized fraction.
+ */
 double frexp(double x, int* exp);
+/**
+ * @brief Decomposes a single-precision floating-point number.
+ */
 float frexpf(float x, int* exp);
 
+/**
+ * @brief Returns the binary exponent of a double-precision value as a signed integer.
+ *
+ * For normal numbers, this is the same as the exponent returned by frexp, minus 1.
+ * Special cases for zero, infinity, and NaN return FP_ILOGB0 or INT_MAX/FP_ILOGBNAN.
+ */
 int ilogb(double x);
+/**
+ * @brief Returns the binary exponent of a single-precision value.
+ */
 int ilogbf(float x);
 
+/**
+ * @brief Returns the binary exponent of a double-precision value as a floating-point number.
+ *
+ * For non-zero finite values, the result is floor(log2(abs(x))).
+ */
 double logb(double x);
+/**
+ * @brief Returns the binary exponent of a single-precision value.
+ */
 float logbf(float x);
 
 // 2. Adjacent / rounding primitives

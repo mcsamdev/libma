@@ -29,9 +29,24 @@ LIBMA_ALWAYS_INLINE_STATIC int ker_libma_clz32(uint32_t x) {
     return __builtin_clz(x);
 #else
     int n = 0;
-    while((x & 0x80000000u) == 0) {
-        x <<= 1;
-        n++;
+    if(x <= 0x0000FFFF) {
+        n += 16;
+        x <<= 16;
+    }
+    if(x <= 0x00FFFFFF) {
+        n += 8;
+        x <<= 8;
+    }
+    if(x <= 0x0FFFFFFF) {
+        n += 4;
+        x <<= 4;
+    }
+    if(x <= 0x3FFFFFFF) {
+        n += 2;
+        x <<= 2;
+    }
+    if(x <= 0x7FFFFFFF) {
+        n += 1;
     }
     return n;
 #endif
@@ -51,11 +66,12 @@ LIBMA_ALWAYS_INLINE_STATIC int ker_libma_clz64(uint64_t x) {
     return __builtin_clzll(x);
 #else
     int n = 0;
-    while((x & 0x8000000000000000ULL) == 0) {
-        x <<= 1;
-        n++;
+    if(x <= 0xFFFFFFFFULL) {
+        n += 32;
+        return n + ker_libma_clz32((uint32_t)x);
     }
-    return n;
+    // If x > 32 bits, we just check the upper 32 bits
+    return ker_libma_clz32((uint32_t)(x >> 32));
 #endif
 }
 
@@ -122,7 +138,7 @@ LIBMA_ALWAYS_INLINE_STATIC double ker_dbl_normalize(const double x, int* e) {
         const int shift = 52 - lead;
 
         frac <<= shift; /* now has the 1 at bit 52 */
-        frac &= DBL_FRAC_MASK; /* drop the implicit 1 */
+        frac &= DBL_FRAC_MASK; /* drop implicit 1 */
         *e = 1 - DBL_EXP_BIAS - shift;
 
         const uint64_t norm = ((uint64_t)DBL_EXP_BIAS << 52) | frac | (u & DBL_SIGN_MASK);

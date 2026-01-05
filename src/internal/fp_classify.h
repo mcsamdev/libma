@@ -6,6 +6,7 @@
 #define LIBMA_FP_CLASSIFY_H
 
 #include "bits.h"
+#include "math_config.h"
 
 /* --- float (binary32) --- */
 /**
@@ -74,7 +75,7 @@ LIBMA_ALWAYS_INLINE_STATIC bool ker_flt_issubnormal_u32(const uint32_t u) {
  */
 LIBMA_ALWAYS_INLINE_STATIC float ker_flt_copysign(const float x, const float y) {
     uint32_t ux = ker_flt_to_u32(x);
-    uint32_t uy = ker_flt_to_u32(y);
+    const uint32_t uy = ker_flt_to_u32(y);
     ux = (ux & ~FLT_SIGN_MASK) | (uy & FLT_SIGN_MASK);
     return ker_u32_to_flt(ux);
 }
