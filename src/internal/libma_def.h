@@ -96,6 +96,11 @@ typedef int8_t i8;
 typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
+typedef uint8_t bool;
+#define TRUE 1
+#define FALSE 0
+// normalization, everything non 0 (false) collapses to 1 (true)
+#define BOOL(x) ((x) ? TRUE : FALSE)
 
 // these two can be used since checks above ensure 64 bit systems and correct semantics
 

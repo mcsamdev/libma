@@ -24,7 +24,9 @@ add_library(libma STATIC
         src/internal/bits/consts.h
         src/internal/funcs/fabs.h
         src/internal/funcs/copysign.h
-        src/copysign.c)
+        src/copysign.c
+        src/internal/bits/classify.h
+        src/totalorder.c)
 
 target_include_directories(libma PUBLIC include)
 target_include_directories(libma PRIVATE src/internal)
