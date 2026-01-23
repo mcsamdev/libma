@@ -8,7 +8,10 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
+#define RESTRICT
 extern "C" {
+#else
+#define RESTRICT restrict
 #endif
 
 /* bit and classification stuff */
@@ -53,8 +56,8 @@ float ldexpf(float x, int exp);
 double scalbln(double x, long int n);
 float scalblnf(float x, long int n);
 
-double frexp(double x, int* restrict exp);
-float frexpf(float x, int* restrict exp);
+double frexp(double x, int* RESTRICT exp);
+float frexpf(float x, int* RESTRICT exp);
 
 int ilogb(double x);
 int ilogbf(float x);
