@@ -22,7 +22,9 @@ add_library(libma STATIC
         src/internal/bits/bitcasts.h
         src/internal/bits/extract.h
         src/internal/bits/consts.h
-        src/internal/funcs/fabs.h)
+        src/internal/funcs/fabs.h
+        src/internal/funcs/copysign.h
+        src/copysign.c)
 
 target_include_directories(libma PUBLIC include)
 target_include_directories(libma PRIVATE src/internal)
