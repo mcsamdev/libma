@@ -10,6 +10,9 @@
 #ifdef __cplusplus
 #define RESTRICT
 extern "C" {
+
+
+
 #else
 #define RESTRICT restrict
 #endif
@@ -28,20 +31,6 @@ int totalorderf(const float* x, const float* y);
 int totalordermag(const double* x, const double* y);
 int totalordermagf(const float* x, const float* y);
 
-/* Canonicalization */
-int canonicalize(double* cx, const double* x);
-int canonicalizef(float* cx, const float* x);
-
-/* NaN payload */
-double getpayload(const double* x);
-float getpayloadf(const float* x);
-
-int setpayload(double* x, double payload);
-int setpayloadf(float* x, float payload);
-
-int setpayloadsig(double* x, double payload);
-int setpayloadsigf(float* x, float payload);
-
 /* NaN construction */
 double nan(const char* tagp);
 float nanf(const char* tagp);
@@ -56,8 +45,8 @@ float ldexpf(float x, int exp);
 double scalbln(double x, long int n);
 float scalblnf(float x, long int n);
 
-double frexp(double x, int* RESTRICT exp);
-float frexpf(float x, int* RESTRICT exp);
+double frexp(double x, int* exp);
+float frexpf(float x, int* exp);
 
 int ilogb(double x);
 int ilogbf(float x);

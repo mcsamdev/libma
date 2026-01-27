@@ -54,6 +54,71 @@ LIBMA_STATIC_ASSERT(DBL_MIN_EXP == -1021, double_minexp_must_be_minus1021);
 #error "Unknown compiler"
 #endif
 
+#if defined(CLANG) || defined(GCC)
+#define LIBMA_CLZ32(x) __builtin_clz(x)
+#elif defined(MSVC)
+#define LIBMA_CLZ32(x) __lzcnt(x)
+#else
+#define LIBMA_CLZ32(x) ({                     \
+u32 _v = (u32)(x);              \
+u32 _r;                              \
+if (_v == 0) {                            \
+_r = 32;                              \
+} else {                                  \
+_v |= _v >> 1;                        \
+_v |= _v >> 2;                        \
+_v |= _v >> 4;                        \
+_v |= _v >> 8;                        \
+_v |= _v >> 16;                       \
+static const u8 _idx[32] = {     \
+0,  9,  1, 10, 13, 21,  2, 29,     \
+11, 14, 16, 18, 22, 25,  3, 30,     \
+8, 12, 20, 28, 15, 17, 24,  7,     \
+19, 27, 23,  6, 26,  5,  4, 31      \
+};                                    \
+u32 _msb =                       \
+_idx[(u32)(_v * 0x07C4ACDDu) >> 27]; \
+_r = 31u - _msb;                      \
+}                                         \
+_r;                                       \
+})
+#endif
+
+#if defined(CLANG) || defined(GCC)
+#define LIBMA_CLZ64(x) __builtin_clzll(x)
+#elif defined(MSVC)
+#define LIBMA_CLZ64(x) __lzcnt64(x)
+#else
+#define LIBMA_CLZ64(x) ({                         \
+u64 _v = (u64)(x);                  \
+u32 _r;                                  \
+if (_v == 0) {                                \
+_r = 64;                                  \
+} else {                                      \
+_v |= _v >> 1;                            \
+_v |= _v >> 2;                            \
+_v |= _v >> 4;                            \
+_v |= _v >> 8;                            \
+_v |= _v >> 16;                           \
+_v |= _v >> 32;                           \
+static const u8 _idx[64] = {         \
+0,  1,  2,  7,  3, 13,  8, 19,         \
+4, 25, 14, 28,  9, 34, 20, 40,         \
+5, 17, 26, 38, 15, 46, 29, 48,         \
+10, 31, 35, 54, 21, 50, 41, 57,         \
+63,  6, 12, 18, 24, 27, 33, 39,         \
+16, 37, 45, 47, 30, 53, 49, 56,         \
+62, 11, 23, 32, 36, 44, 52, 55,         \
+61, 22, 43, 51, 60, 42, 59, 58          \
+};                                        \
+u64 _msb =                           \
+_idx[(uint64_t)(_v * 0x03F79D71B4CB0A89ULL) >> 58]; \
+_r = 63u - (u32)_msb;                 \
+}                                             \
+_r;                                           \
+})
+#endif
+
 #define KER_INLINE static inline
 
 #if defined(CLANG) || defined(GCC)

@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED)
 
 set(RELEASE_CFLAGS
-        -O3 -march=native -funroll-loops -fno-strict-aliasing
+        -O3 -march=native -funroll-loops -fno-strict-aliasing -fno-unsafe-math-optimizations
 )
 set(DEBUG_CFLAGS
         -Og -g
@@ -26,7 +26,13 @@ add_library(libma STATIC
         src/internal/funcs/copysign.h
         src/copysign.c
         src/internal/bits/classify.h
-        src/totalorder.c)
+        src/totalorder.c
+        bench/benches.c
+        src/nan.c
+        src/scalbn.c
+        src/internal/funcs/scalbn.h
+        src/internal/bits/construct.h
+        src/internal/funcs/normalize.h)
 
 target_include_directories(libma PUBLIC include)
 target_include_directories(libma PRIVATE src/internal)
@@ -55,3 +61,8 @@ target_link_options(libma PRIVATE
         $<$<CONFIG:Release>:-flto>
 )
 
+option(LIBMA_BUILD_BENCH "Build libma benchmarks" ON)
+
+if (LIBMA_BUILD_BENCH)
+    add_subdirectory(bench)
+endif ()
